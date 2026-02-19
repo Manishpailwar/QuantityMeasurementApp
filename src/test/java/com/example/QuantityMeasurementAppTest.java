@@ -214,6 +214,90 @@ public class QuantityMeasurementAppTest
     }
 
     @Test
+    @DisplayName("Given two yard measurements of 1.0, when compared, then should be equal")
+    public void testEquality_YardToYard_SameValue()
+    {
+        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength yard2 = new QuantityLength(1.0, LengthUnit.YARD);
+        assertEquals(yard1, yard2, "1.0 yard should be equal to 1.0 yard");
+    }
+
+    @Test
+    @DisplayName("Given two yard measurements of 1.0 and 2.0, when compared, then should not be equal")
+    public void testEquality_YardToYard_DifferentValue()
+    {
+        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength yard2 = new QuantityLength(2.0, LengthUnit.YARD);
+        assertNotEquals(yard1, yard2, "1.0 yard should not be equal to 2.0 yard");
+    }
+
+    @Test
+    @DisplayName("Given equivalent yard and feet, when compared, then should be equal")
+    public void testEquality_YardToFeet_EquivalentValue()
+    {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength feet = new QuantityLength(3.0, LengthUnit.FEET);
+        assertEquals(yard, feet, "1.0 yard should be equal to 3.0 feet");
+    }
+
+    @Test
+    @DisplayName("Given equivalent yard and inches, when compared, then should be equal")
+    public void testEquality_YardToInches_EquivalentValue()
+    {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength inches = new QuantityLength(36.0, LengthUnit.INCH);
+        assertEquals(yard, inches, "1.0 yard should be equal to 36.0 inches");
+    }
+
+    @Test
+    @DisplayName("Given non-equivalent yard and feet, when compared, then should not be equal")
+    public void testEquality_YardToFeet_NonEquivalentValue()
+    {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength feet = new QuantityLength(2.0, LengthUnit.FEET);
+        assertNotEquals(yard, feet, "1.0 yard should not be equal to 2.0 feet");
+    }
+
+    @Test
+    @DisplayName("Given two centimeter measurements of 2.0, when compared, then should be equal")
+    public void testEquality_CentimeterToCentimeter_SameValue()
+    {
+        QuantityLength cm1 = new QuantityLength(2.0, LengthUnit.CENTIMETER);
+        QuantityLength cm2 = new QuantityLength(2.0, LengthUnit.CENTIMETER);
+        assertEquals(cm1, cm2, "2.0 cm should be equal to 2.0 cm");
+    }
+
+    @Test
+    @DisplayName("Given equivalent centimeter and inches, when compared, then should be equal")
+    public void testEquality_CentimeterToInches_EquivalentValue()
+    {
+        QuantityLength cm = new QuantityLength(1.0, LengthUnit.CENTIMETER);
+        QuantityLength inches = new QuantityLength(0.393701, LengthUnit.INCH);
+        assertEquals(cm, inches, "1.0 cm should be equal to 0.393701 inch");
+    }
+
+    @Test
+    @DisplayName("Given non-equivalent centimeter and feet, when compared, then should not be equal")
+    public void testEquality_CentimeterToFeet_NonEquivalentValue()
+    {
+        QuantityLength cm = new QuantityLength(1.0, LengthUnit.CENTIMETER);
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+        assertNotEquals(cm, feet, "1.0 cm should not be equal to 1.0 feet");
+    }
+
+    @Test
+    @DisplayName("Given yard, feet, and inches equivalence, then should be transitive")
+    public void testEquality_MultiUnit_TransitiveProperty()
+    {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength feet = new QuantityLength(3.0, LengthUnit.FEET);
+        QuantityLength inches = new QuantityLength(36.0, LengthUnit.INCH);
+        assertEquals(yard, feet, "1.0 yard should equal 3.0 feet");
+        assertEquals(feet, inches, "3.0 feet should equal 36.0 inches");
+        assertEquals(yard, inches, "1.0 yard should equal 36.0 inches");
+    }
+
+    @Test
     @DisplayName("Given a null unit, when constructing, then should throw")
     public void testEquality_NullUnit()
     {
