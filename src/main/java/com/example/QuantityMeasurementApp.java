@@ -18,6 +18,53 @@ public class QuantityMeasurementApp {
         return quantity.convertTo(target).getValue();
     }
 
+    public static double add(double value1, LengthUnit unit1, double value2, LengthUnit unit2, LengthUnit resultUnit) {
+        if (Double.isNaN(value1) || Double.isInfinite(value1)) {
+            throw new IllegalArgumentException("Value 1 must be a finite number.");
+        }
+        if (Double.isNaN(value2) || Double.isInfinite(value2)) {
+            throw new IllegalArgumentException("Value 2 must be a finite number.");
+        }
+        if (unit1 == null) {
+            throw new IllegalArgumentException("Unit 1 must not be null.");
+        }
+        if (unit2 == null) {
+            throw new IllegalArgumentException("Unit 2 must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        QuantityLength quantity1 = new QuantityLength(value1, unit1);
+        QuantityLength quantity2 = new QuantityLength(value2, unit2);
+        return quantity1.add(quantity2, resultUnit).getValue();
+    }
+
+    public static QuantityLength add(QuantityLength length1, QuantityLength length2, LengthUnit resultUnit) {
+        if (length1 == null) {
+            throw new IllegalArgumentException("Length 1 must not be null.");
+        }
+        if (length2 == null) {
+            throw new IllegalArgumentException("Length 2 must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        return length1.add(length2, resultUnit);
+    }
+
+    public static QuantityLength add(QuantityLength length1, QuantityLength length2) {
+        if (length1 == null) {
+            throw new IllegalArgumentException("Length 1 must not be null.");
+        }
+        if (length2 == null) {
+            throw new IllegalArgumentException("Length 2 must not be null.");
+        }
+        
+        return length1.add(length2);
+    }
+
     public static void demonstrateLengthConversion(double value, LengthUnit fromUnit, LengthUnit toUnit) {
         double result = convert(value, fromUnit, toUnit);
         System.out.printf("Converting %.2f %s to %s: %.6f%n", value, fromUnit, toUnit, result);
@@ -49,6 +96,33 @@ public class QuantityMeasurementApp {
         QuantityLength length1 = new QuantityLength(value1, unit1);
         QuantityLength length2 = new QuantityLength(value2, unit2);
         demonstrateLengthEquality(length1, length2);
+    }
+
+    public static void demonstrateLengthAddition(double value1, LengthUnit unit1, 
+                                                 double value2, LengthUnit unit2, LengthUnit resultUnit) {
+        double result = add(value1, unit1, value2, unit2, resultUnit);
+        System.out.printf("Adding %.2f %s + %.2f %s = %.6f %s%n", value1, unit1, value2, unit2, result, resultUnit);
+    }
+
+    public static void demonstrateLengthAddition(QuantityLength length1, QuantityLength length2, LengthUnit resultUnit) {
+        if (length1 == null || length2 == null) {
+            throw new IllegalArgumentException("Both lengths must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        QuantityLength result = length1.add(length2, resultUnit);
+        System.out.printf("Adding %s + %s = %s%n", length1, length2, result);
+    }
+
+    public static void demonstrateLengthAddition(QuantityLength length1, QuantityLength length2) {
+        if (length1 == null || length2 == null) {
+            throw new IllegalArgumentException("Both lengths must not be null.");
+        }
+        
+        QuantityLength result = length1.add(length2);
+        System.out.printf("Adding %s + %s = %s%n", length1, length2, result);
     }
 
     public static boolean checkFeetEquality(double value1, double value2) {
@@ -143,6 +217,50 @@ public class QuantityMeasurementApp {
         System.out.printf("Original: %.6f FEET -> %.6f INCH -> %.6f FEET (Round-trip preserved: %b)%n",
                 original, feet2Inches, inches2Feet, 
                 Math.abs(original - inches2Feet) < EPSILON);
+
+        System.out.println("\n========================================");
+        System.out.println("===== UC6: ADDITION OPERATIONS =====\n");
+
+        System.out.println("--- Same-Unit Addition ---");
+        demonstrateLengthAddition(1.0, LengthUnit.FEET, 2.0, LengthUnit.FEET, LengthUnit.FEET);
+        demonstrateLengthAddition(6.0, LengthUnit.INCH, 6.0, LengthUnit.INCH, LengthUnit.INCH);
+        demonstrateLengthAddition(1.0, LengthUnit.YARD, 3.0, LengthUnit.FEET, LengthUnit.YARD);
+
+        System.out.println("\n--- Cross-Unit Addition ---");
+        demonstrateLengthAddition(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCH, LengthUnit.FEET);
+        demonstrateLengthAddition(12.0, LengthUnit.INCH, 1.0, LengthUnit.FEET, LengthUnit.INCH);
+        demonstrateLengthAddition(1.0, LengthUnit.YARD, 3.0, LengthUnit.FEET, LengthUnit.YARD);
+        demonstrateLengthAddition(36.0, LengthUnit.INCH, 1.0, LengthUnit.YARD, LengthUnit.INCH);
+
+        System.out.println("\n--- Cross-Unit Addition (Centimeters) ---");
+        demonstrateLengthAddition(2.54, LengthUnit.CENTIMETER, 1.0, LengthUnit.INCH, LengthUnit.CENTIMETER);
+
+        System.out.println("\n--- Addition with Zero Values ---");
+        demonstrateLengthAddition(5.0, LengthUnit.FEET, 0.0, LengthUnit.INCH, LengthUnit.FEET);
+
+        System.out.println("\n--- Addition with Negative Values ---");
+        demonstrateLengthAddition(5.0, LengthUnit.FEET, -2.0, LengthUnit.FEET, LengthUnit.FEET);
+
+        System.out.println("\n--- Using Instance Method (Default Unit) ---");
+        QuantityLength addFeet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength addInches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        demonstrateLengthAddition(addFeet1, addInches1);
+
+        QuantityLength addInches2 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength addFeet2 = new QuantityLength(1.0, LengthUnit.FEET);
+        demonstrateLengthAddition(addInches2, addFeet2);
+
+        System.out.println("\n--- Using Instance Method (Specified Unit) ---");
+        QuantityLength addYard1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength addFeet3 = new QuantityLength(3.0, LengthUnit.FEET);
+        demonstrateLengthAddition(addYard1, addFeet3, LengthUnit.YARD);
+
+        System.out.println("\n--- Commutativity Check ---");
+        double result1 = add(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCH, LengthUnit.FEET);
+        double result2 = add(12.0, LengthUnit.INCH, 1.0, LengthUnit.FEET, LengthUnit.FEET);
+        System.out.printf("add(1.0 FEET, 12.0 INCH, FEET) = %.6f%n", result1);
+        System.out.printf("add(12.0 INCH, 1.0 FEET, FEET) = %.6f%n", result2);
+        System.out.printf("Commutativity verified: %b%n", Math.abs(result1 - result2) < EPSILON);
 
         System.out.println("\n========================================");
         System.out.println("     Application Execution Complete");
