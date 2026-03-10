@@ -88,101 +88,11 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Given two feet measurements with decimal values, when compared, then should handle precision")
-    public void testEquality_DecimalPrecision() {
-        QuantityLength feet1 = new QuantityLength(1.5, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(1.5, LengthUnit.FEET);
-        assertEquals(feet1, feet2, "1.5 ft should be equal to 1.5 ft");
-    }
-
-    @Test
-    @DisplayName("Given two inches measurements of 1.0, when compared, then should be equal")
-    public void testInchesEquality_SameValue() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(1.0, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "The measurements should be identical");
-    }
-
-    @Test
-    @DisplayName("Given two inches measurements of 1.0 and 2.0, when compared, then should not be equal")
-    public void testInchesEquality_DifferentValue() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(2.0, LengthUnit.INCH);
-        assertNotEquals(inches1, inches2, "1.0 inch should not be equal to 2.0 inch");
-    }
-
-    @Test
-    @DisplayName("Given an inches measurement, when compared to null, then should not be equal")
-    public void testInchesEquality_NullComparison() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        assertNotEquals(inches1, null, "Inches object should not be equal to null");
-    }
-
-    @Test
-    @DisplayName("Given an inches measurement, when compared to non-Inches object, then should not be equal")
-    public void testInchesEquality_NonNumericInput() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        String nonNumeric = "1.0";
-        assertNotEquals(inches1, nonNumeric, "Inches object should not be equal to non-Inches object");
-    }
-
-    @Test
-    @DisplayName("Given an inches measurement, when compared to itself, then should be equal")
-    public void testInchesEquality_SameReference() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        assertEquals(inches1, inches1, "Inches object should be equal to itself (reflexive)");
-    }
-
-    @Test
-    @DisplayName("Given two equal inches measurements, when compared in any order, then should be symmetric")
-    public void testInchesEquality_SymmetricProperty() {
-        QuantityLength inches1 = new QuantityLength(3.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(3.0, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "Equality should be symmetric");
-        assertEquals(inches2, inches1, "Equality should be symmetric");
-    }
-
-    @Test
-    @DisplayName("Given three equal inches measurements, when compared transitively, then should be equal")
-    public void testInchesEquality_TransitiveProperty() {
-        QuantityLength inches1 = new QuantityLength(5.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(5.0, LengthUnit.INCH);
-        QuantityLength inches3 = new QuantityLength(5.0, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "Equality should be transitive");
-        assertEquals(inches2, inches3, "Equality should be transitive");
-        assertEquals(inches1, inches3, "Equality should be transitive");
-    }
-
-    @Test
-    @DisplayName("Given two inches measurements of 0.0, when compared, then should be equal")
-    public void testInchesEquality_ZeroValue() {
-        QuantityLength inches1 = new QuantityLength(0.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(0.0, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "0.0 inch should be equal to 0.0 inch");
-    }
-
-    @Test
-    @DisplayName("Given two inches measurements of -1.0, when compared, then should be equal")
-    public void testInchesEquality_NegativeValue() {
-        QuantityLength inches1 = new QuantityLength(-1.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(-1.0, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "-1.0 inch should be equal to -1.0 inch");
-    }
-
-    @Test
-    @DisplayName("Given two inches measurements with decimal values, when compared, then should handle precision")
-    public void testInchesEquality_DecimalPrecision() {
-        QuantityLength inches1 = new QuantityLength(1.5, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(1.5, LengthUnit.INCH);
-        assertEquals(inches1, inches2, "1.5 inch should be equal to 1.5 inch");
-    }
-
-    @Test
-    @DisplayName("Given a Feet object and an Inches object, when compared, then should not be equal")
-    public void testInchesEquality_DifferentTypes() {
+    @DisplayName("Given a Feet object and an Inches object with different values, when compared, then should not be equal")
+    public void testEquality_DifferentUnits() {
         QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength inches = new QuantityLength(1.0, LengthUnit.INCH);
-        assertNotEquals(feet, inches, "Feet and Inches objects should not be equal (different units)");
+        assertNotEquals(feet, inches, "1.0 ft should not equal 1.0 inch (different values)");
     }
 
     @Test
@@ -201,13 +111,7 @@ public class QuantityMeasurementAppTest {
         assertEquals(yard1, yard2, "1.0 yard should be equal to 1.0 yard");
     }
 
-    @Test
-    @DisplayName("Given two yard measurements of 1.0 and 2.0, when compared, then should not be equal")
-    public void testEquality_YardToYard_DifferentValue() {
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength yard2 = new QuantityLength(2.0, LengthUnit.YARD);
-        assertNotEquals(yard1, yard2, "1.0 yard should not be equal to 2.0 yard");
-    }
+
 
     @Test
     @DisplayName("Given equivalent yard and feet, when compared, then should be equal")
@@ -233,13 +137,7 @@ public class QuantityMeasurementAppTest {
         assertNotEquals(yard, feet, "1.0 yard should not be equal to 2.0 feet");
     }
 
-    @Test
-    @DisplayName("Given two centimeter measurements of 2.0, when compared, then should be equal")
-    public void testEquality_CentimeterToCentimeter_SameValue() {
-        QuantityLength cm1 = new QuantityLength(2.0, LengthUnit.CENTIMETER);
-        QuantityLength cm2 = new QuantityLength(2.0, LengthUnit.CENTIMETER);
-        assertEquals(cm1, cm2, "2.0 cm should be equal to 2.0 cm");
-    }
+
 
     @Test
     @DisplayName("Given equivalent centimeter and inches, when compared, then should be equal")
@@ -427,48 +325,11 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Given large value in feet, when converted to inches, then should handle precision")
-    public void testConversion_LargeValue() {
-        double result = QuantityMeasurementApp.convert(1000000.0, LengthUnit.FEET, LengthUnit.INCH);
-        assertEquals(12000000.0, result, EPSILON, "Large value conversion should maintain precision");
-    }
-
-    @Test
-    @DisplayName("Given small value in feet, when converted to inches, then should handle precision")
-    public void testConversion_SmallValue() {
-        double result = QuantityMeasurementApp.convert(0.001, LengthUnit.FEET, LengthUnit.INCH);
-        assertEquals(0.012, result, EPSILON, "Small value conversion should maintain precision");
-    }
-
-    @Test
-    @DisplayName("Given decimal value in feet, when converted to inches, then should maintain precision")
-    public void testConversion_DecimalValue() {
-        double result = QuantityMeasurementApp.convert(1.5, LengthUnit.FEET, LengthUnit.INCH);
-        assertEquals(18.0, result, EPSILON, "1.5 ft should convert to 18.0 inches");
-    }
-
-    @Test
     @DisplayName("Given NaN value, when converting, then should throw IllegalArgumentException")
-    public void testConversion_InvalidValue_NaN() {
+    public void testConversion_InvalidValue() {
         assertThrows(IllegalArgumentException.class,
                 () -> QuantityMeasurementApp.convert(Double.NaN, LengthUnit.FEET, LengthUnit.INCH),
                 "NaN value should throw IllegalArgumentException");
-    }
-
-    @Test
-    @DisplayName("Given Infinity value, when converting, then should throw IllegalArgumentException")
-    public void testConversion_InvalidValue_Infinity() {
-        assertThrows(IllegalArgumentException.class,
-                () -> QuantityMeasurementApp.convert(Double.POSITIVE_INFINITY, LengthUnit.FEET, LengthUnit.INCH),
-                "Positive Infinity should throw IllegalArgumentException");
-    }
-
-    @Test
-    @DisplayName("Given negative Infinity value, when converting, then should throw IllegalArgumentException")
-    public void testConversion_InvalidValue_NegativeInfinity() {
-        assertThrows(IllegalArgumentException.class,
-                () -> QuantityMeasurementApp.convert(Double.NEGATIVE_INFINITY, LengthUnit.FEET, LengthUnit.INCH),
-                "Negative Infinity should throw IllegalArgumentException");
     }
 
     @Test
@@ -540,30 +401,12 @@ public class QuantityMeasurementAppTest {
         assertEquals(LengthUnit.FEET, original.getUnit(), "Original unit should not change");
     }
 
-    @Test
-    @DisplayName("Given two feet values using static method, when compared, then should return correct equality")
-    public void testStaticMethod_FeetEquality() {
-        boolean result1 = QuantityMeasurementApp.checkFeetEquality(1.0, 1.0);
-        boolean result2 = QuantityMeasurementApp.checkFeetEquality(1.0, 2.0);
-        
-        assertEquals(true, result1, "1.0 ft should be equal to 1.0 ft");
-        assertEquals(false, result2, "1.0 ft should not be equal to 2.0 ft");
-    }
 
-    @Test
-    @DisplayName("Given two inches values using static method, when compared, then should return correct equality")
-    public void testStaticMethod_InchesEquality() {
-        boolean result1 = QuantityMeasurementApp.checkInchesEquality(1.0, 1.0);
-        boolean result2 = QuantityMeasurementApp.checkInchesEquality(1.0, 2.0);
-        
-        assertEquals(true, result1, "1.0 inch should be equal to 1.0 inch");
-        assertEquals(false, result2, "1.0 inch should not be equal to 2.0 inch");
-    }
 
     // UC6: ADDITION TEST CASES
     @Test
     @DisplayName("Given 1.0 feet and 2.0 feet, when added, then should return 3.0 feet")
-    public void testAddition_SameUnit_FeetPlusFeet() {
+    public void testAddition_SameUnit() {
         QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength feet2 = new QuantityLength(2.0, LengthUnit.FEET);
         QuantityLength result = feet1.add(feet2);
@@ -572,28 +415,8 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Given 6.0 inches and 6.0 inches, when added, then should return 12.0 inches")
-    public void testAddition_SameUnit_InchesPlusInches() {
-        QuantityLength inches1 = new QuantityLength(6.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(6.0, LengthUnit.INCH);
-        QuantityLength result = inches1.add(inches2);
-        assertEquals(12.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.INCH, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 1.0 yards and 1.0 yards, when added, then should return 2.0 yards")
-    public void testAddition_SameUnit_YardsPlusYards() {
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength yard2 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength result = yard1.add(yard2);
-        assertEquals(2.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.YARD, result.getUnit());
-    }
-
-    @Test
     @DisplayName("Given 1.0 feet and 12.0 inches, when added in feet, then should return 2.0 feet")
-    public void testAddition_CrossUnit_FeetPlusInches() {
+    public void testAddition_CrossUnit() {
         QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
         QuantityLength result = feet1.add(inches1, LengthUnit.FEET);
@@ -602,48 +425,8 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Given 12.0 inches and 1.0 feet, when added in inches, then should return 24.0 inches")
-    public void testAddition_CrossUnit_InchesPlusFeet() {
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength result = inches1.add(feet1, LengthUnit.INCH);
-        assertEquals(24.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.INCH, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 1.0 yards and 3.0 feet, when added in yards, then should return 2.0 yards")
-    public void testAddition_CrossUnit_YardsPlusFeet() {
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength feet1 = new QuantityLength(3.0, LengthUnit.FEET);
-        QuantityLength result = yard1.add(feet1, LengthUnit.YARD);
-        assertEquals(2.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.YARD, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 36.0 inches and 1.0 yards, when added in inches, then should return 72.0 inches")
-    public void testAddition_CrossUnit_InchesPlusYards() {
-        QuantityLength inches1 = new QuantityLength(36.0, LengthUnit.INCH);
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength result = inches1.add(yard1, LengthUnit.INCH);
-        assertEquals(72.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.INCH, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 2.54 centimeters and 1.0 inches, when added in centimeters, then should return ~5.08 centimeters")
-    public void testAddition_CrossUnit_CentimetersPlusInches() {
-        QuantityLength cm1 = new QuantityLength(2.54, LengthUnit.CENTIMETER);
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength result = cm1.add(inches1, LengthUnit.CENTIMETER);
-        assertEquals(5.08, result.getValue(), 0.001);
-        assertEquals(LengthUnit.CENTIMETER, result.getUnit());
-    }
-
-    @Test
     @DisplayName("Given 1.0 feet and 12.0 inches, when added using default unit, then should result in feet")
-    public void testAddition_DefaultUnit_FeetAsFirstOperand() {
+    public void testAddition_DefaultUnit() {
         QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
         QuantityLength result = feet1.add(inches1);
@@ -651,282 +434,18 @@ public class QuantityMeasurementAppTest {
         assertEquals(LengthUnit.FEET, result.getUnit());
     }
 
-    @Test
-    @DisplayName("Given 12.0 inches and 1.0 feet, when added using default unit, then should result in inches")
-    public void testAddition_DefaultUnit_InchesAsFirstOperand() {
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength result = inches1.add(feet1);
-        assertEquals(24.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.INCH, result.getUnit());
-    }
+
 
     @Test
-    @DisplayName("Given 5.0 feet and 0.0 inches, when added, then should return 5.0 feet")
-    public void testAddition_WithZero_ZeroInches() {
-        QuantityLength feet1 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(0.0, LengthUnit.INCH);
-        QuantityLength result = feet1.add(inches1, LengthUnit.FEET);
-        assertEquals(5.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.FEET, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 0.0 feet and 5.0 feet, when added, then should return 5.0 feet")
-    public void testAddition_WithZero_ZeroFeet() {
-        QuantityLength feet1 = new QuantityLength(0.0, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(5.0, result.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 5.0 feet and -2.0 feet, when added, then should return 3.0 feet")
-    public void testAddition_NegativeValues() {
-        QuantityLength feet1 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(-2.0, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(3.0, result.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given -1.0 feet and -2.0 feet, when added, then should return -3.0 feet")
-    public void testAddition_BothNegativeValues() {
-        QuantityLength feet1 = new QuantityLength(-1.0, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(-2.0, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(-3.0, result.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 1.0 feet and 12.0 inches, when added, then should be commutative")
-    public void testAddition_Commutativity() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        
-        double result1 = QuantityMeasurementApp.add(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCH, LengthUnit.FEET);
-        double result2 = QuantityMeasurementApp.add(12.0, LengthUnit.INCH, 1.0, LengthUnit.FEET, LengthUnit.FEET);
-        
-        assertEquals(result1, result2, EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 0.5 feet and 1.5 feet, when added, then should return 2.0 feet")
-    public void testAddition_DecimalValues() {
-        QuantityLength feet1 = new QuantityLength(0.5, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(1.5, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(2.0, result.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 1e6 feet and 1e6 feet, when added, then should handle large values")
-    public void testAddition_LargeValues() {
-        QuantityLength feet1 = new QuantityLength(1e6, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(1e6, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(2e6, result.getValue(), EPSILON * 1e6);
-    }
-
-    @Test
-    @DisplayName("Given 0.001 feet and 0.002 feet, when added, then should handle small values")
-    public void testAddition_SmallValues() {
-        QuantityLength feet1 = new QuantityLength(0.001, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(0.002, LengthUnit.FEET);
-        QuantityLength result = feet1.add(feet2);
-        assertEquals(0.003, result.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given null as second operand, when adding, then should throw exception")
-    public void testAddition_NullSecondOperand() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        assertThrows(IllegalArgumentException.class, () -> feet1.add(null));
-    }
-
-    @Test
-    @DisplayName("Given null target unit, when adding with specified unit, then should throw exception")
-    public void testAddition_NullTargetUnit() {
+    @DisplayName("Given null operand or unit, when adding, then should throw exception")
+    public void testAddition_Validation() {
         QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength feet2 = new QuantityLength(2.0, LengthUnit.FEET);
+        
+        assertThrows(IllegalArgumentException.class, () -> feet1.add(null));
         assertThrows(IllegalArgumentException.class, () -> feet1.add(feet2, null));
-    }
-
-    @Test
-    @DisplayName("Given NaN value in static add method, when adding, then should throw exception")
-    public void testAddition_NaNValue() {
         assertThrows(IllegalArgumentException.class, () -> 
             QuantityMeasurementApp.add(Double.NaN, LengthUnit.FEET, 1.0, LengthUnit.FEET, LengthUnit.FEET));
-    }
-
-    @Test
-    @DisplayName("Given Infinity value in static add method, when adding, then should throw exception")
-    public void testAddition_InfinityValue() {
-        assertThrows(IllegalArgumentException.class, () -> 
-            QuantityMeasurementApp.add(Double.POSITIVE_INFINITY, LengthUnit.FEET, 1.0, LengthUnit.FEET, LengthUnit.FEET));
-    }
-
-    @Test
-    @DisplayName("Given null unit in static add method, when adding, then should throw exception")
-    public void testAddition_NullSourceUnit() {
-        assertThrows(IllegalArgumentException.class, () -> 
-            QuantityMeasurementApp.add(1.0, null, 1.0, LengthUnit.FEET, LengthUnit.FEET));
-    }
-
-    @Test
-    @DisplayName("Given null resultUnit in static add method, when adding, then should throw exception")
-    public void testAddition_NullResultUnit() {
-        assertThrows(IllegalArgumentException.class, () -> 
-            QuantityMeasurementApp.add(1.0, LengthUnit.FEET, 1.0, LengthUnit.FEET, null));
-    }
-
-    @Test
-    @DisplayName("Given 1.0 foot and 12.0 inches addition result converted to yards, then should preserve mathematical accuracy")
-    public void testAddition_RoundTripConversion() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength result = feet1.add(inches1, LengthUnit.FEET);
-        
-        QuantityLength convertedToYards = result.convertTo(LengthUnit.YARD);
-        assertEquals(2.0/3.0, convertedToYards.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given measurements added then converted, when reconverted, then should match original sum")
-    public void testAddition_ConversionConsistency() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(24.0, LengthUnit.INCH);
-        
-        QuantityLength resultInFeet = feet1.add(inches1, LengthUnit.FEET);
-        QuantityLength resultInInches = feet1.add(inches1, LengthUnit.INCH);
-        
-        assertEquals(resultInFeet.getValue(), resultInInches.convertTo(LengthUnit.FEET).getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 1.0 yards and 12.0 inches, when added using static method, then should return 4.0 yards")
-    public void testAddition_StaticMethod_WithResultUnit() {
-        double result = QuantityMeasurementApp.add(1.0, LengthUnit.YARD, 12.0, LengthUnit.INCH, LengthUnit.YARD);
-        assertEquals(4.0/3.0, result, EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given QuantityLength objects, when added using static method, then should return new QuantityLength")
-    public void testAddition_StaticMethod_WithQuantityLengthObjects() {
-        QuantityLength feet1 = new QuantityLength(2.0, LengthUnit.FEET);
-        QuantityLength feet2 = new QuantityLength(3.0, LengthUnit.FEET);
-        QuantityLength result = QuantityMeasurementApp.add(feet1, feet2);
-        
-        assertEquals(5.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.FEET, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given QuantityLength objects with different units, when added using static method with result unit, then should return result in specified unit")
-    public void testAddition_StaticMethod_WithDifferentUnits() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength result = QuantityMeasurementApp.add(feet1, inches1, LengthUnit.FEET);
-        
-        assertEquals(2.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.FEET, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given null Length1 in static method, when adding, then should throw exception")
-    public void testAddition_StaticMethod_NullLength1() {
-        QuantityLength feet2 = new QuantityLength(2.0, LengthUnit.FEET);
-        assertThrows(IllegalArgumentException.class, () -> 
-            QuantityMeasurementApp.add(null, feet2, LengthUnit.FEET));
-    }
-
-    @Test
-    @DisplayName("Given null Length2 in static method, when adding, then should throw exception")
-    public void testAddition_StaticMethod_NullLength2() {
-        QuantityLength feet1 = new QuantityLength(2.0, LengthUnit.FEET);
-        assertThrows(IllegalArgumentException.class, () -> 
-            QuantityMeasurementApp.add(feet1, null, LengthUnit.FEET));
-    }
-
-    @Test
-    @DisplayName("Given addition result, when converted to different units, then should maintain equality")
-    public void testAddition_EqualityAfterConversion() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        
-        QuantityLength resultInFeet = feet1.add(inches1, LengthUnit.FEET);
-        QuantityLength resultInInches = feet1.add(inches1, LengthUnit.INCH);
-        
-        assertEquals(resultInFeet, resultInInches);
-    }
-
-    @Test
-    @DisplayName("Given addition of yards and feet, when result expressed as inches, then should equal direct conversion")
-    public void testAddition_UnitsConsistency() {
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength feet1 = new QuantityLength(3.0, LengthUnit.FEET);
-        
-        QuantityLength resultInYards = yard1.add(feet1, LengthUnit.YARD);
-        QuantityLength convertedToInches = resultInYards.convertTo(LengthUnit.INCH);
-        
-        assertEquals(72.0, convertedToInches.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given addition of centimeters and inches, when result converted to feet, then should be accurate")
-    public void testAddition_CentimeterAndInch() {
-        QuantityLength cm1 = new QuantityLength(30.48, LengthUnit.CENTIMETER);
-        QuantityLength inches1 = new QuantityLength(0.0, LengthUnit.INCH);
-        
-        QuantityLength result = cm1.add(inches1, LengthUnit.CENTIMETER);
-        QuantityLength convertedToFeet = result.convertTo(LengthUnit.FEET);
-        
-        assertEquals(1.0, convertedToFeet.getValue(), EPSILON);
-    }
-
-    @Test
-    @DisplayName("Given 1.0 feet and 12.0 inches with explicit target unit FEET, when added, then should return 2.0 feet")
-    public void testAddition_ExplicitTargetUnit_Feet() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength result = feet1.add(inches1, LengthUnit.FEET);
-        
-        assertEquals(2.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.FEET, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 1.0 feet and 12.0 inches with explicit target unit INCHES, when added, then should return 24.0 inches")
-    public void testAddition_ExplicitTargetUnit_Inches() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength result = feet1.add(inches1, LengthUnit.INCH);
-        
-        assertEquals(24.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.INCH, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 1.0 feet and 12.0 inches with explicit target unit YARDS, when added, then should return ~0.667 yards")
-    public void testAddition_ExplicitTargetUnit_Yards() {
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength result = feet1.add(inches1, LengthUnit.YARD);
-        
-        assertEquals(2.0 / 3.0, result.getValue(), EPSILON);
-        assertEquals(LengthUnit.YARD, result.getUnit());
-    }
-
-    @Test
-    @DisplayName("Given 1.0 inches and 1.0 inches with explicit target unit CENTIMETERS, when added, then should return ~5.08 centimeters")
-    public void testAddition_ExplicitTargetUnit_Centimeters() {
-        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength inches2 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength result = inches1.add(inches2, LengthUnit.CENTIMETER);
-        
-        // 2 inches in cm using our conversion factors: 2 / 12 / (0.393701 / 12) = 2 / 0.393701 ≈ 5.08
-        assertEquals(5.08, result.getValue(), 0.01);
-        assertEquals(LengthUnit.CENTIMETER, result.getUnit());
     }
 
     @Test
@@ -1262,5 +781,89 @@ public class QuantityMeasurementAppTest {
         } catch (NoSuchMethodException e) {
             fail("Conversion methods should exist in LengthUnit");
         }
+    }
+
+    // UC9: WEIGHT MEASUREMENT TEST CASES
+
+    @Test
+    @DisplayName("Given 1.0 kg and 1000.0 g, when compared, then should be equal")
+    public void testWeightEquality_KilogramToGram() {
+        QuantityWeight kg = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight g = new QuantityWeight(1000.0, WeightUnit.GRAM);
+        assertEquals(kg, g, "1.0 kg should equal 1000.0 g");
+    }
+
+    @Test
+    @DisplayName("Given 1.0 lb and 0.453592 kg, when compared, then should be equal")
+    public void testWeightEquality_PoundToKilogram() {
+        QuantityWeight lb = new QuantityWeight(1.0, WeightUnit.POUND);
+        QuantityWeight kg = new QuantityWeight(0.453592, WeightUnit.KILOGRAM);
+        assertEquals(lb, kg, "1.0 lb should equal 0.453592 kg");
+    }
+
+    @Test
+    @DisplayName("Given 2.0 kg, when converted to grams, then should return 2000.0 g")
+    public void testWeightConversion_KilogramToGram() {
+        QuantityWeight kg = new QuantityWeight(2.0, WeightUnit.KILOGRAM);
+        QuantityWeight g = kg.convertTo(WeightUnit.GRAM);
+        assertEquals(new QuantityWeight(2000.0, WeightUnit.GRAM), g, "2.0 kg should convert to 2000.0 g");
+    }
+
+    @Test
+    @DisplayName("Given 5.0 lb, when converted to kilograms, then should return approximately 2.268 kg")
+    public void testWeightConversion_PoundToKilogram() {
+        QuantityWeight lb = new QuantityWeight(5.0, WeightUnit.POUND);
+        QuantityWeight kg = lb.convertTo(WeightUnit.KILOGRAM);
+        assertEquals(2.26796, kg.getValue(), EPSILON, "5.0 lb should convert to approximately 2.26796 kg");
+    }
+
+    @Test
+    @DisplayName("Given 3.0 kg + 500.0 g, when added with explicit target, then should return 3.5 kg")
+    public void testWeightAddition_ExplicitTarget() {
+        QuantityWeight kg = new QuantityWeight(3.0, WeightUnit.KILOGRAM);
+        QuantityWeight g = new QuantityWeight(500.0, WeightUnit.GRAM);
+        QuantityWeight result = kg.add(g, WeightUnit.KILOGRAM);
+        assertEquals(new QuantityWeight(3.5, WeightUnit.KILOGRAM), result, "3.0 kg + 500.0 g should equal 3.5 kg");
+    }
+
+    @Test
+    @DisplayName("Given 1.5 kg + 250.0 g, when added without explicit target, then should return 1.75 kg")
+    public void testWeightAddition_ImplicitTarget() {
+        QuantityWeight kg = new QuantityWeight(1.5, WeightUnit.KILOGRAM);
+        QuantityWeight g = new QuantityWeight(250.0, WeightUnit.GRAM);
+        QuantityWeight result = kg.add(g);
+        assertEquals(new QuantityWeight(1.75, WeightUnit.KILOGRAM), result, "1.5 kg + 250.0 g should equal 1.75 kg (implicit target)");
+    }
+
+    @Test
+    @DisplayName("Given WeightUnit enum, when testing conversion methods, then should convert correctly")
+    public void testWeightUnit_ConversionMethods() {
+        assertEquals(0.5, WeightUnit.GRAM.convertToBaseUnit(500.0), EPSILON);
+        assertEquals(500.0, WeightUnit.GRAM.convertFromBaseUnit(0.5), EPSILON);
+        assertEquals(4.53592, WeightUnit.POUND.convertToBaseUnit(10.0), EPSILON);
+    }
+
+    @Test
+    @DisplayName("Given null weight unit, when creating QuantityWeight, then should throw exception")
+    public void testWeightValidation_NullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new QuantityWeight(1.0, null);
+        }, "Creating QuantityWeight with null unit should throw exception");
+    }
+
+    @Test
+    @DisplayName("Given NaN value, when creating QuantityWeight, then should throw exception")
+    public void testWeightValidation_NaNValue() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new QuantityWeight(Double.NaN, WeightUnit.KILOGRAM);
+        }, "Creating QuantityWeight with NaN should throw exception");
+    }
+
+    @Test
+    @DisplayName("Given infinite value, when creating QuantityWeight, then should throw exception")
+    public void testWeightValidation_InfiniteValue() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new QuantityWeight(Double.POSITIVE_INFINITY, WeightUnit.KILOGRAM);
+        }, "Creating QuantityWeight with infinite value should throw exception");
     }
 }

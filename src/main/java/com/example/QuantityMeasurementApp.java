@@ -149,53 +149,174 @@ public class QuantityMeasurementApp {
         return cm1.equals(cm2);
     }
 
+    public static double convertWeight(double value, WeightUnit source, WeightUnit target) {
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            throw new IllegalArgumentException("Value must be a finite number.");
+        }
+        if (source == null) {
+            throw new IllegalArgumentException("Source unit must not be null.");
+        }
+        if (target == null) {
+            throw new IllegalArgumentException("Target unit must not be null.");
+        }
+        
+        QuantityWeight quantity = new QuantityWeight(value, source);
+        return quantity.convertTo(target).getValue();
+    }
+
+    public static double addWeight(double value1, WeightUnit unit1, double value2, WeightUnit unit2, WeightUnit resultUnit) {
+        if (Double.isNaN(value1) || Double.isInfinite(value1)) {
+            throw new IllegalArgumentException("Value 1 must be a finite number.");
+        }
+        if (Double.isNaN(value2) || Double.isInfinite(value2)) {
+            throw new IllegalArgumentException("Value 2 must be a finite number.");
+        }
+        if (unit1 == null) {
+            throw new IllegalArgumentException("Unit 1 must not be null.");
+        }
+        if (unit2 == null) {
+            throw new IllegalArgumentException("Unit 2 must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        QuantityWeight quantity1 = new QuantityWeight(value1, unit1);
+        QuantityWeight quantity2 = new QuantityWeight(value2, unit2);
+        return quantity1.add(quantity2, resultUnit).getValue();
+    }
+
+    public static QuantityWeight add(QuantityWeight weight1, QuantityWeight weight2, WeightUnit resultUnit) {
+        if (weight1 == null) {
+            throw new IllegalArgumentException("Weight 1 must not be null.");
+        }
+        if (weight2 == null) {
+            throw new IllegalArgumentException("Weight 2 must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        return weight1.add(weight2, resultUnit);
+    }
+
+    public static QuantityWeight add(QuantityWeight weight1, QuantityWeight weight2) {
+        if (weight1 == null) {
+            throw new IllegalArgumentException("Weight 1 must not be null.");
+        }
+        if (weight2 == null) {
+            throw new IllegalArgumentException("Weight 2 must not be null.");
+        }
+        
+        return weight1.add(weight2);
+    }
+
+    public static void demonstrateWeightConversion(double value, WeightUnit fromUnit, WeightUnit toUnit) {
+        double result = convertWeight(value, fromUnit, toUnit);
+        System.out.printf("Converting %.2f %s to %s: %.6f%n", value, fromUnit, toUnit, result);
+    }
+
+    public static void demonstrateWeightConversion(QuantityWeight quantity, WeightUnit targetUnit) {
+        if (quantity == null) {
+            throw new IllegalArgumentException("Quantity must not be null.");
+        }
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit must not be null.");
+        }
+        
+        QuantityWeight converted = quantity.convertTo(targetUnit);
+        System.out.printf("Converting %s to %s: %.6f%n", quantity, targetUnit, converted.getValue());
+    }
+
+    public static void demonstrateWeightEquality(QuantityWeight weight1, QuantityWeight weight2) {
+        if (weight1 == null || weight2 == null) {
+            throw new IllegalArgumentException("Both weights must not be null.");
+        }
+        
+        boolean isEqual = weight1.equals(weight2);
+        System.out.printf("%s equals %s: %s%n", weight1, weight2, isEqual);
+    }
+
+    public static void demonstrateWeightComparison(double value1, WeightUnit unit1, 
+                                                   double value2, WeightUnit unit2) {
+        QuantityWeight weight1 = new QuantityWeight(value1, unit1);
+        QuantityWeight weight2 = new QuantityWeight(value2, unit2);
+        demonstrateWeightEquality(weight1, weight2);
+    }
+
+    public static void demonstrateWeightAddition(double value1, WeightUnit unit1, 
+                                                 double value2, WeightUnit unit2, WeightUnit resultUnit) {
+        double result = addWeight(value1, unit1, value2, unit2, resultUnit);
+        System.out.printf("Adding %.2f %s + %.2f %s = %.6f %s%n", value1, unit1, value2, unit2, result, resultUnit);
+    }
+
+    public static void demonstrateWeightAddition(QuantityWeight weight1, QuantityWeight weight2, WeightUnit resultUnit) {
+        if (weight1 == null || weight2 == null) {
+            throw new IllegalArgumentException("Both weights must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        QuantityWeight result = weight1.add(weight2, resultUnit);
+        System.out.printf("Adding %s + %s = %s%n", weight1, weight2, result);
+    }
+
+    public static void demonstrateWeightAddition(QuantityWeight weight1, QuantityWeight weight2) {
+        if (weight1 == null || weight2 == null) {
+            throw new IllegalArgumentException("Both weights must not be null.");
+        }
+        
+        QuantityWeight result = weight1.add(weight2);
+        System.out.printf("Adding %s + %s = %s%n", weight1, weight2, result);
+    }
+
+    public static boolean checkKilogramEquality(double value1, double value2) {
+        QuantityWeight kg1 = new QuantityWeight(value1, WeightUnit.KILOGRAM);
+        QuantityWeight kg2 = new QuantityWeight(value2, WeightUnit.KILOGRAM);
+        return kg1.equals(kg2);
+    }
+
+    public static boolean checkGramEquality(double value1, double value2) {
+        QuantityWeight g1 = new QuantityWeight(value1, WeightUnit.GRAM);
+        QuantityWeight g2 = new QuantityWeight(value2, WeightUnit.GRAM);
+        return g1.equals(g2);
+    }
+
+    public static boolean checkPoundEquality(double value1, double value2) {
+        QuantityWeight lb1 = new QuantityWeight(value1, WeightUnit.POUND);
+        QuantityWeight lb2 = new QuantityWeight(value2, WeightUnit.POUND);
+        return lb1.equals(lb2);
+    }
+
     public static void main(String[] args) {
         System.out.println("========================================");
         System.out.println("   QUANTITY MEASUREMENT APPLICATION");
         System.out.println("========================================\n");
 
-        System.out.println("===== UC8: REFACTORED DESIGN - UNIT RESPONSIBILITY =====\n");
+        System.out.println("===== WEIGHT MEASUREMENT SUPPORT =====\n");
 
-        System.out.println("--- LengthUnit Conversion Methods ---");
-        System.out.printf("LengthUnit.FEET.convertToBaseUnit(12.0) = %.2f feet%n", 
-            LengthUnit.FEET.convertToBaseUnit(12.0));
-        System.out.printf("LengthUnit.INCH.convertToBaseUnit(12.0) = %.2f feet%n", 
-            LengthUnit.INCH.convertToBaseUnit(12.0));
-        System.out.printf("LengthUnit.YARD.convertToBaseUnit(1.0) = %.2f feet%n", 
-            LengthUnit.YARD.convertToBaseUnit(1.0));
-        System.out.printf("LengthUnit.CENTIMETER.convertToBaseUnit(30.48) = %.2f feet%n", 
-            LengthUnit.CENTIMETER.convertToBaseUnit(30.48));
+        System.out.println("--- Equality ---");
+        QuantityWeight kg1 = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight g1000 = new QuantityWeight(1000.0, WeightUnit.GRAM);
+        System.out.printf("1.0 kg equals 1000.0 g: %b%n", kg1.equals(g1000));
 
-        System.out.println("\n--- From Base Unit Conversions ---");
-        System.out.printf("LengthUnit.FEET.convertFromBaseUnit(2.0) = %.2f feet%n", 
-            LengthUnit.FEET.convertFromBaseUnit(2.0));
-        System.out.printf("LengthUnit.INCH.convertFromBaseUnit(1.0) = %.2f inches%n", 
-            LengthUnit.INCH.convertFromBaseUnit(1.0));
-        System.out.printf("LengthUnit.YARD.convertFromBaseUnit(3.0) = %.2f yards%n", 
-            LengthUnit.YARD.convertFromBaseUnit(3.0));
-        System.out.printf("LengthUnit.CENTIMETER.convertFromBaseUnit(1.0) = %.2f centimeters%n", 
-            LengthUnit.CENTIMETER.convertFromBaseUnit(1.0));
-
-        System.out.println("\n--- Refactored QuantityLength Operations ---");
-        QuantityLength uc8_feet = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength uc8_inches = new QuantityLength(12.0, LengthUnit.INCH);
-        System.out.printf("Quantity(1.0, FEET).equals(Quantity(12.0, INCHES)) = %b%n", 
-            uc8_feet.equals(uc8_inches));
+        System.out.println("\n--- Unit Conversion ---");
+        System.out.printf("500.0 g to base unit: %.2f kg%n", WeightUnit.GRAM.convertToBaseUnit(500.0));
         
-        QuantityLength uc8_converted = uc8_feet.convertTo(LengthUnit.INCH);
-        System.out.printf("Quantity(1.0, FEET).convertTo(INCHES) = %s%n", uc8_converted);
-        
-        QuantityLength uc8_sum = uc8_feet.add(uc8_inches, LengthUnit.FEET);
-        System.out.printf("Quantity(1.0, FEET).add(Quantity(12.0, INCHES), FEET) = %s%n", uc8_sum);
-        
-        QuantityLength uc8_sumYards = uc8_feet.add(uc8_inches, LengthUnit.YARD);
-        System.out.printf("Quantity(1.0, FEET).add(Quantity(12.0, INCHES), YARDS) = %s%n", uc8_sumYards);
+        System.out.println("\n--- Quantity Conversion ---");
+        QuantityWeight kg2 = new QuantityWeight(2.0, WeightUnit.KILOGRAM);
+        System.out.printf("2.0 kg to grams: %s%n", kg2.convertTo(WeightUnit.GRAM));
 
-        System.out.println("\n--- Delegation Pattern Demonstration ---");
-        System.out.println("QuantityLength now delegates all conversion logic to LengthUnit");
-        System.out.println("LengthUnit is responsible for: convertToBaseUnit() and convertFromBaseUnit()");
-        System.out.println("QuantityLength is responsible for: equality, arithmetic, and value management");
-        System.out.println("Design follows Single Responsibility Principle (SRP)");
+        System.out.println("\n--- Addition (Explicit Target) ---");
+        QuantityWeight kg3 = new QuantityWeight(3.0, WeightUnit.KILOGRAM);
+        QuantityWeight g500 = new QuantityWeight(500.0, WeightUnit.GRAM);
+        System.out.printf("3.0 kg + 500.0 g = %s%n", kg3.add(g500, WeightUnit.KILOGRAM));
+
+        System.out.println("\n--- Addition (Implicit Target) ---");
+        QuantityWeight kg1_5 = new QuantityWeight(1.5, WeightUnit.KILOGRAM);
+        QuantityWeight g250 = new QuantityWeight(250.0, WeightUnit.GRAM);
+        System.out.printf("1.5 kg + 250.0 g = %s%n", kg1_5.add(g250));
 
         System.out.println("\n========================================");
         System.out.println("     Application Execution Complete");
