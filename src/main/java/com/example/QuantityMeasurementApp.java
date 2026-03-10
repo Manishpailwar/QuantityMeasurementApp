@@ -124,6 +124,98 @@ public class QuantityMeasurementApp {
         System.out.printf("Adding %.2f %s + %.2f %s = %.6f %s%n", value1, unit1.getUnitName(), value2, unit2.getUnitName(), result, resultUnit.getUnitName());
     }
 
+    public static <U extends Measurable> Quantity<U> subtract(Quantity<U> quantity1, Quantity<U> quantity2) {
+        if (quantity1 == null) {
+            throw new IllegalArgumentException("First quantity must not be null.");
+        }
+        if (quantity2 == null) {
+            throw new IllegalArgumentException("Second quantity must not be null.");
+        }
+        
+        return quantity1.subtract(quantity2);
+    }
+
+    public static <U extends Measurable> Quantity<U> subtract(Quantity<U> quantity1, Quantity<U> quantity2, U resultUnit) {
+        if (quantity1 == null) {
+            throw new IllegalArgumentException("First quantity must not be null.");
+        }
+        if (quantity2 == null) {
+            throw new IllegalArgumentException("Second quantity must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        return quantity1.subtract(quantity2, resultUnit);
+    }
+
+    public static <U extends Measurable> void demonstrateSubtraction(Quantity<U> quantity1, Quantity<U> quantity2) {
+        if (quantity1 == null || quantity2 == null) {
+            throw new IllegalArgumentException("Both quantities must not be null.");
+        }
+        
+        Quantity<U> result = quantity1.subtract(quantity2);
+        System.out.printf("Subtracting %s - %s = %s%n", quantity1, quantity2, result);
+    }
+
+    public static <U extends Measurable> void demonstrateSubtraction(Quantity<U> quantity1, Quantity<U> quantity2, U resultUnit) {
+        if (quantity1 == null || quantity2 == null) {
+            throw new IllegalArgumentException("Both quantities must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        Quantity<U> result = quantity1.subtract(quantity2, resultUnit);
+        System.out.printf("Subtracting %s - %s = %s%n", quantity1, quantity2, result);
+    }
+
+    public static <U extends Measurable> Quantity<U> divide(Quantity<U> quantity1, Quantity<U> quantity2) {
+        if (quantity1 == null) {
+            throw new IllegalArgumentException("First quantity must not be null.");
+        }
+        if (quantity2 == null) {
+            throw new IllegalArgumentException("Second quantity must not be null.");
+        }
+        
+        return quantity1.divide(quantity2);
+    }
+
+    public static <U extends Measurable> Quantity<U> divide(Quantity<U> quantity1, Quantity<U> quantity2, U resultUnit) {
+        if (quantity1 == null) {
+            throw new IllegalArgumentException("First quantity must not be null.");
+        }
+        if (quantity2 == null) {
+            throw new IllegalArgumentException("Second quantity must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        return quantity1.divide(quantity2, resultUnit);
+    }
+
+    public static <U extends Measurable> void demonstrateDivision(Quantity<U> quantity1, Quantity<U> quantity2) {
+        if (quantity1 == null || quantity2 == null) {
+            throw new IllegalArgumentException("Both quantities must not be null.");
+        }
+        
+        Quantity<U> result = quantity1.divide(quantity2);
+        System.out.printf("Dividing %s / %s = %s%n", quantity1, quantity2, result);
+    }
+
+    public static <U extends Measurable> void demonstrateDivision(Quantity<U> quantity1, Quantity<U> quantity2, U resultUnit) {
+        if (quantity1 == null || quantity2 == null) {
+            throw new IllegalArgumentException("Both quantities must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        Quantity<U> result = quantity1.divide(quantity2, resultUnit);
+        System.out.printf("Dividing %s / %s = %s%n", quantity1, quantity2, result);
+    }
+
     // ===== BACKWARD COMPATIBILITY METHODS FOR LENGTH =====
     // These methods maintain API compatibility with UC1-UC8
 
@@ -263,5 +355,13 @@ public class QuantityMeasurementApp {
         System.out.println("\nCross-category check:");
         System.out.printf("1.0 LITRE equals 1.0 FEET: %b%n", new Quantity<>(1.0, VolumeUnit.LITRE)
             .equals(new Quantity<>(1.0, LengthUnit.FEET)));
+
+        System.out.println("\nSubtraction:");
+        System.out.printf("5.0 FEET - 24.0 INCH = %s%n", new Quantity<>(5.0, LengthUnit.FEET)
+            .subtract(new Quantity<>(24.0, LengthUnit.INCH)));
+
+        System.out.println("\nDivision:");
+        System.out.printf("12.0 INCH / 1.0 FEET = %s%n", new Quantity<>(12.0, LengthUnit.INCH)
+            .divide(new Quantity<>(1.0, LengthUnit.FEET)));
     }
 }

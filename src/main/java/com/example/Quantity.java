@@ -15,6 +15,52 @@ public class Quantity<U extends Measurable> {
         this.value = value;
     }
 
+    public Quantity<U> subtract(Quantity<U> other) {
+        return subtract(other, this.unit);
+    }
+
+    public Quantity<U> subtract(Quantity<U> other, U resultUnit) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other quantity must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        double thisBaseValue = this.toBaseUnit();
+        double otherBaseValue = other.toBaseUnit();
+        double differenceBaseValue = thisBaseValue - otherBaseValue;
+        
+        double resultValue = resultUnit.convertFromBaseUnit(differenceBaseValue);
+        // Round to two decimal places for precision
+        resultValue = Math.round(resultValue * 100.0) / 100.0;
+        return new Quantity<>(resultValue, resultUnit);
+    }
+
+    public Quantity<U> divide(Quantity<U> other) {
+        return divide(other, this.unit);
+    }
+
+    public Quantity<U> divide(Quantity<U> other, U resultUnit) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other quantity must not be null.");
+        }
+        if (resultUnit == null) {
+            throw new IllegalArgumentException("Result unit must not be null.");
+        }
+        
+        double thisBaseValue = this.toBaseUnit();
+        double otherBaseValue = other.toBaseUnit();
+        
+        if (Math.abs(otherBaseValue) < EPSILON) {
+            throw new ArithmeticException("Cannot divide by zero.");
+        }
+        
+        double ratio = thisBaseValue / otherBaseValue;
+        // Round to two decimal places for precision
+        ratio = Math.round(ratio * 100.0) / 100.0;
+        return new Quantity<>(ratio, resultUnit);
+    }
 
     public Quantity<U> convertTo(U targetUnit) {
         Objects.requireNonNull(targetUnit, "Target unit must not be null.");
