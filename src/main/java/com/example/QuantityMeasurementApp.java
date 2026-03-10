@@ -336,32 +336,66 @@ public class QuantityMeasurementApp {
         return lb1.equals(lb2);
     }
 
+   
     
     public static void main(String[] args) {
         System.out.println("QUANTITY MEASUREMENT APPLICATION\n");
-
-        System.out.println("Weight:");
-        System.out.printf("1.0 KILOGRAM equals 1000.0 GRAM: %b%n", new Quantity<>(1.0, WeightUnit.KILOGRAM)
-            .equals(new Quantity<>(1000.0, WeightUnit.GRAM)));
-
-        System.out.println("\nLength:");
-        System.out.printf("1.0 FEET equals 12.0 INCH: %b%n", new Quantity<>(1.0, LengthUnit.FEET)
-            .equals(new Quantity<>(12.0, LengthUnit.INCH)));
-
-        System.out.println("\nVolume:");
-        System.out.printf("1.0 LITRE equals 1000.0 MILLILITRE: %b%n", new Quantity<>(1.0, VolumeUnit.LITRE)
-            .equals(new Quantity<>(1000.0, VolumeUnit.MILLILITRE)));
-
-        System.out.println("\nCross-category check:");
-        System.out.printf("1.0 LITRE equals 1.0 FEET: %b%n", new Quantity<>(1.0, VolumeUnit.LITRE)
-            .equals(new Quantity<>(1.0, LengthUnit.FEET)));
-
-        System.out.println("\nSubtraction:");
-        System.out.printf("5.0 FEET - 24.0 INCH = %s%n", new Quantity<>(5.0, LengthUnit.FEET)
-            .subtract(new Quantity<>(24.0, LengthUnit.INCH)));
-
-        System.out.println("\nDivision:");
-        System.out.printf("12.0 INCH / 1.0 FEET = %s%n", new Quantity<>(12.0, LengthUnit.INCH)
-            .divide(new Quantity<>(1.0, LengthUnit.FEET)));
+     
+        // Length Operations
+        System.out.println("LENGTH OPERATIONS:");
+        Quantity<LengthUnit> feet5 = new Quantity<>(5.0, LengthUnit.FEET);
+        Quantity<LengthUnit> inches24 = new Quantity<>(24.0, LengthUnit.INCH);
+        
+        System.out.printf("  Created: %s and %s%n", feet5, inches24);
+        System.out.printf("  Base units: %.2f + %.2f %n", 
+            feet5.toBaseUnit(), inches24.toBaseUnit(), AirthmaticOperation.ADD);
+        System.out.printf("  Result: %s%n", feet5.add(inches24));
+        
+        System.out.printf("  Base units: %.2f - %.2f %n", 
+            feet5.toBaseUnit(), inches24.toBaseUnit(), AirthmaticOperation.SUBTRACT);
+        System.out.printf("  Result: %s%n", feet5.subtract(inches24));
+        
+        System.out.printf("  Base units: %.2f / %.2f %n", 
+            inches24.toBaseUnit(), feet5.toBaseUnit(), AirthmaticOperation.DIVIDE);
+        System.out.printf("  Result: %s%n", inches24.divide(feet5));
+        
+        // Weight Operations
+        System.out.println("\nWEIGHT OPERATIONS:");
+        Quantity<WeightUnit> kg3 = new Quantity<>(3.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> g500 = new Quantity<>(500.0, WeightUnit.GRAM);
+        
+        System.out.printf("  Created: %s and %s%n", kg3, g500);
+        System.out.printf("  Base units: %.2f + %.2f %n", 
+            kg3.toBaseUnit(), g500.toBaseUnit(), AirthmaticOperation.ADD);
+        System.out.printf("  Result: %s%n", kg3.add(g500));
+        
+        System.out.printf("  Base units: %.2f - %.2f %n", 
+            kg3.toBaseUnit(), g500.toBaseUnit(), AirthmaticOperation.SUBTRACT);
+        System.out.printf("  Result: %s%n", kg3.subtract(g500));
+        
+        System.out.printf("  Base units: %.2f / %.2f %n", 
+            kg3.toBaseUnit(), g500.toBaseUnit(), AirthmaticOperation.DIVIDE);
+        System.out.printf("  Result: %s%n", kg3.divide(g500));
+        
+        // Volume Operations
+        System.out.println("\nVOLUME OPERATIONS:");
+        Quantity<VolumeUnit> litre2 = new Quantity<>(2.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> ml500 = new Quantity<>(500.0, VolumeUnit.MILLILITRE);
+        
+        System.out.printf("  Created: %s and %s%n", litre2, ml500);
+        System.out.printf("  Base units: %.2f + %.2f %n", 
+            litre2.toBaseUnit(), ml500.toBaseUnit(), AirthmaticOperation.ADD);
+        System.out.printf("  Result: %s%n", litre2.add(ml500));
+        
+        System.out.printf("  Base units: %.2f - %.2f %n", 
+            litre2.toBaseUnit(), ml500.toBaseUnit(), AirthmaticOperation.SUBTRACT);
+        System.out.printf("  Result: %s%n", litre2.subtract(ml500));
+        
+        System.out.printf("  Base units: %.2f / %.2f %n", 
+            litre2.toBaseUnit(), ml500.toBaseUnit(), AirthmaticOperation.DIVIDE);
+        System.out.printf("  Result: %s%n", litre2.divide(ml500));
+        
+       
+        
     }
 }

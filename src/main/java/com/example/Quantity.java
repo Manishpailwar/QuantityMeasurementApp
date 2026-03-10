@@ -15,23 +15,33 @@ public class Quantity<U extends Measurable> {
         this.value = value;
     }
 
+    private double performArithmeticOperation(Quantity<U> other, AirthmaticOperation operation) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other quantity must not be null.");
+        }
+        
+        double thisBaseValue = this.toBaseUnit();
+        double otherBaseValue = other.toBaseUnit();
+        
+        // Special validation for division
+        if (operation == AirthmaticOperation.DIVIDE && Math.abs(otherBaseValue) < EPSILON) {
+            throw new ArithmeticException("Cannot divide by zero.");
+        }
+        
+        return operation.apply(thisBaseValue, otherBaseValue);
+    }
+
     public Quantity<U> subtract(Quantity<U> other) {
         return subtract(other, this.unit);
     }
 
     public Quantity<U> subtract(Quantity<U> other, U resultUnit) {
-        if (other == null) {
-            throw new IllegalArgumentException("Other quantity must not be null.");
-        }
         if (resultUnit == null) {
             throw new IllegalArgumentException("Result unit must not be null.");
         }
         
-        double thisBaseValue = this.toBaseUnit();
-        double otherBaseValue = other.toBaseUnit();
-        double differenceBaseValue = thisBaseValue - otherBaseValue;
-        
-        double resultValue = resultUnit.convertFromBaseUnit(differenceBaseValue);
+        double resultBaseValue = performArithmeticOperation(other, AirthmaticOperation.SUBTRACT);
+        double resultValue = resultUnit.convertFromBaseUnit(resultBaseValue);
         // Round to two decimal places for precision
         resultValue = Math.round(resultValue * 100.0) / 100.0;
         return new Quantity<>(resultValue, resultUnit);
@@ -42,21 +52,11 @@ public class Quantity<U extends Measurable> {
     }
 
     public Quantity<U> divide(Quantity<U> other, U resultUnit) {
-        if (other == null) {
-            throw new IllegalArgumentException("Other quantity must not be null.");
-        }
         if (resultUnit == null) {
             throw new IllegalArgumentException("Result unit must not be null.");
         }
         
-        double thisBaseValue = this.toBaseUnit();
-        double otherBaseValue = other.toBaseUnit();
-        
-        if (Math.abs(otherBaseValue) < EPSILON) {
-            throw new ArithmeticException("Cannot divide by zero.");
-        }
-        
-        double ratio = thisBaseValue / otherBaseValue;
+        double ratio = performArithmeticOperation(other, AirthmaticOperation.DIVIDE);
         // Round to two decimal places for precision
         ratio = Math.round(ratio * 100.0) / 100.0;
         return new Quantity<>(ratio, resultUnit);
@@ -87,20 +87,13 @@ public class Quantity<U extends Measurable> {
         return add(other, this.unit);
     }
 
-
     public Quantity<U> add(Quantity<U> other, U resultUnit) {
-        if (other == null) {
-            throw new IllegalArgumentException("Other quantity must not be null.");
-        }
         if (resultUnit == null) {
             throw new IllegalArgumentException("Result unit must not be null.");
         }
         
-        double thisBaseValue = this.toBaseUnit();
-        double otherBaseValue = other.toBaseUnit();
-        double sumBaseValue = thisBaseValue + otherBaseValue;
-        
-        double resultValue = resultUnit.convertFromBaseUnit(sumBaseValue);
+        double resultBaseValue = performArithmeticOperation(other, AirthmaticOperation.ADD);
+        double resultValue = resultUnit.convertFromBaseUnit(resultBaseValue);
         // Round to two decimal places for precision
         resultValue = Math.round(resultValue * 100.0) / 100.0;
         return new Quantity<>(resultValue, resultUnit);
