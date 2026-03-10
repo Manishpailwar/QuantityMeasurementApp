@@ -154,50 +154,48 @@ public class QuantityMeasurementApp {
         System.out.println("   QUANTITY MEASUREMENT APPLICATION");
         System.out.println("========================================\n");
 
-        System.out.println("===== UC7: EXPLICIT TARGET UNIT ADDITION =====\n");
+        System.out.println("===== UC8: REFACTORED DESIGN - UNIT RESPONSIBILITY =====\n");
 
-        System.out.println("--- Explicit Target Unit: Same as First Operand ---");
-        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
-        demonstrateLengthAddition(feet1, inches1, LengthUnit.FEET);
+        System.out.println("--- LengthUnit Conversion Methods ---");
+        System.out.printf("LengthUnit.FEET.convertToBaseUnit(12.0) = %.2f feet%n", 
+            LengthUnit.FEET.convertToBaseUnit(12.0));
+        System.out.printf("LengthUnit.INCH.convertToBaseUnit(12.0) = %.2f feet%n", 
+            LengthUnit.INCH.convertToBaseUnit(12.0));
+        System.out.printf("LengthUnit.YARD.convertToBaseUnit(1.0) = %.2f feet%n", 
+            LengthUnit.YARD.convertToBaseUnit(1.0));
+        System.out.printf("LengthUnit.CENTIMETER.convertToBaseUnit(30.48) = %.2f feet%n", 
+            LengthUnit.CENTIMETER.convertToBaseUnit(30.48));
 
-        System.out.println("\n--- Explicit Target Unit: Same as Second Operand ---");
-        demonstrateLengthAddition(feet1, inches1, LengthUnit.INCH);
+        System.out.println("\n--- From Base Unit Conversions ---");
+        System.out.printf("LengthUnit.FEET.convertFromBaseUnit(2.0) = %.2f feet%n", 
+            LengthUnit.FEET.convertFromBaseUnit(2.0));
+        System.out.printf("LengthUnit.INCH.convertFromBaseUnit(1.0) = %.2f inches%n", 
+            LengthUnit.INCH.convertFromBaseUnit(1.0));
+        System.out.printf("LengthUnit.YARD.convertFromBaseUnit(3.0) = %.2f yards%n", 
+            LengthUnit.YARD.convertFromBaseUnit(3.0));
+        System.out.printf("LengthUnit.CENTIMETER.convertFromBaseUnit(1.0) = %.2f centimeters%n", 
+            LengthUnit.CENTIMETER.convertFromBaseUnit(1.0));
 
-        System.out.println("\n--- Explicit Target Unit: Different from Both Operands ---");
-        demonstrateLengthAddition(feet1, inches1, LengthUnit.YARD);
+        System.out.println("\n--- Refactored QuantityLength Operations ---");
+        QuantityLength uc8_feet = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength uc8_inches = new QuantityLength(12.0, LengthUnit.INCH);
+        System.out.printf("Quantity(1.0, FEET).equals(Quantity(12.0, INCHES)) = %b%n", 
+            uc8_feet.equals(uc8_inches));
+        
+        QuantityLength uc8_converted = uc8_feet.convertTo(LengthUnit.INCH);
+        System.out.printf("Quantity(1.0, FEET).convertTo(INCHES) = %s%n", uc8_converted);
+        
+        QuantityLength uc8_sum = uc8_feet.add(uc8_inches, LengthUnit.FEET);
+        System.out.printf("Quantity(1.0, FEET).add(Quantity(12.0, INCHES), FEET) = %s%n", uc8_sum);
+        
+        QuantityLength uc8_sumYards = uc8_feet.add(uc8_inches, LengthUnit.YARD);
+        System.out.printf("Quantity(1.0, FEET).add(Quantity(12.0, INCHES), YARDS) = %s%n", uc8_sumYards);
 
-        System.out.println("\n--- Explicit Target Unit: Yards ---");
-        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength feet2 = new QuantityLength(3.0, LengthUnit.FEET);
-        demonstrateLengthAddition(yard1, feet2, LengthUnit.YARD);
-
-        System.out.println("\n--- Explicit Target Unit: Feet from Inches and Yards ---");
-        QuantityLength inches2 = new QuantityLength(36.0, LengthUnit.INCH);
-        QuantityLength yard2 = new QuantityLength(1.0, LengthUnit.YARD);
-        demonstrateLengthAddition(inches2, yard2, LengthUnit.FEET);
-
-        System.out.println("\n--- Explicit Target Unit: Centimeters ---");
-        QuantityLength cm1 = new QuantityLength(2.54, LengthUnit.CENTIMETER);
-        QuantityLength inches3 = new QuantityLength(1.0, LengthUnit.INCH);
-        demonstrateLengthAddition(cm1, inches3, LengthUnit.CENTIMETER);
-
-        System.out.println("\n--- Explicit Target Unit: With Zero Values ---");
-        QuantityLength feet3 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength inches4 = new QuantityLength(0.0, LengthUnit.INCH);
-        demonstrateLengthAddition(feet3, inches4, LengthUnit.YARD);
-
-        System.out.println("\n--- Explicit Target Unit: With Negative Values ---");
-        QuantityLength feet4 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength feet5 = new QuantityLength(-2.0, LengthUnit.FEET);
-        demonstrateLengthAddition(feet4, feet5, LengthUnit.INCH);
-
-        System.out.println("\n--- Commutativity with Explicit Target Unit ---");
-        QuantityLength result1 = feet1.add(inches1, LengthUnit.YARD);
-        QuantityLength result2 = inches1.add(feet1, LengthUnit.YARD);
-        System.out.printf("add(1.0 FEET, 12.0 INCH, YARD) = %s%n", result1);
-        System.out.printf("add(12.0 INCH, 1.0 FEET, YARD) = %s%n", result2);
-        System.out.printf("Commutativity verified: %b%n", result1.equals(result2));
+        System.out.println("\n--- Delegation Pattern Demonstration ---");
+        System.out.println("QuantityLength now delegates all conversion logic to LengthUnit");
+        System.out.println("LengthUnit is responsible for: convertToBaseUnit() and convertFromBaseUnit()");
+        System.out.println("QuantityLength is responsible for: equality, arithmetic, and value management");
+        System.out.println("Design follows Single Responsibility Principle (SRP)");
 
         System.out.println("\n========================================");
         System.out.println("     Application Execution Complete");
