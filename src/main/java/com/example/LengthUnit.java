@@ -1,38 +1,40 @@
 package com.example;
 
-public enum LengthUnit {
-    FEET(1.0),
-    INCH(1.0 / 12.0),
-    YARD(3.0),
-    CENTIMETER((0.393701) / 12.0);
+public enum LengthUnit implements Measurable {
+    FEET(1.0, "FEET"),
+    INCH(1.0 / 12.0, "INCH"),
+    YARD(3.0, "YARD"),
+    CENTIMETER((0.393701) / 12.0, "CENTIMETER");
 
-    private final double toFeetFactor;
+    private final double conversionFactor;
+    private final String unitName;
 
-    LengthUnit(double toFeetFactor) {
-        this.toFeetFactor = toFeetFactor;
+    LengthUnit(double conversionFactor, String unitName) {
+        this.conversionFactor = conversionFactor;
+        this.unitName = unitName;
+    }
+
+    @Override
+    public double getConversionFactor() {
+        return conversionFactor;
     }
 
     public double toFeetFactor() {
-        return toFeetFactor;
+        return conversionFactor;
     }
 
-    /**
-     * Converts a value in this unit to the base unit (feet).
-     * 
-     * @param value the value in this unit
-     * @return the value converted to feet (base unit)
-     */
+    @Override
     public double convertToBaseUnit(double value) {
-        return value * toFeetFactor;
+        return value * conversionFactor;
     }
 
-    /**
-     * Converts a value from the base unit (feet) to this unit.
-     * 
-     * @param baseValue the value in feet (base unit)
-     * @return the value converted to this unit
-     */
+    @Override
     public double convertFromBaseUnit(double baseValue) {
-        return baseValue / toFeetFactor;
+        return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName() {
+        return unitName;
     }
 }

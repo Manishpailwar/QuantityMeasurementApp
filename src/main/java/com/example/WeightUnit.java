@@ -1,27 +1,40 @@
 package com.example;
 
-public enum WeightUnit {
-    KILOGRAM(1.0),
-    GRAM(0.001),
-    POUND(0.453592);
+public enum WeightUnit implements Measurable {
+    KILOGRAM(1.0, "KILOGRAM"),
+    GRAM(0.001, "GRAM"),
+    POUND(0.453592, "POUND");
 
-    private final double toKilogramFactor;
+    private final double conversionFactor;
+    private final String unitName;
+    
 
-    WeightUnit(double toKilogramFactor) {
-        this.toKilogramFactor = toKilogramFactor;
+    WeightUnit(double conversionFactor, String unitName) {
+        this.conversionFactor = conversionFactor;
+        this.unitName = unitName;
+    }
+
+    @Override
+    public double getConversionFactor() {
+        return conversionFactor;
     }
 
     public double toKilogramFactor() {
-        return toKilogramFactor;
+        return conversionFactor;
     }
 
-
+    @Override
     public double convertToBaseUnit(double value) {
-        return value * toKilogramFactor;
+        return value * conversionFactor;
     }
 
-  
+    @Override
     public double convertFromBaseUnit(double baseValue) {
-        return baseValue / toKilogramFactor;
+        return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName() {
+        return unitName;
     }
 }
