@@ -244,62 +244,24 @@ public class QuantityMeasurementApp {
         return lb1.equals(lb2);
     }
 
-    /**
-     * Main method demonstrating generic quantity operations.
-     */
+    
     public static void main(String[] args) {
-        System.out.println("========================================");
-        System.out.println("   QUANTITY MEASUREMENT APPLICATION");
-        System.out.println("========================================\n");
+        System.out.println("QUANTITY MEASUREMENT APPLICATION\n");
 
-        System.out.println("===== GENERIC WEIGHT MEASUREMENT SUPPORT =====\n");
+        System.out.println("Weight:");
+        System.out.printf("1.0 KILOGRAM equals 1000.0 GRAM: %b%n", new Quantity<>(1.0, WeightUnit.KILOGRAM)
+            .equals(new Quantity<>(1000.0, WeightUnit.GRAM)));
 
-        System.out.println("--- Equality ---");
-        Quantity<WeightUnit> kg1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
-        Quantity<WeightUnit> g1000 = new Quantity<>(1000.0, WeightUnit.GRAM);
-        System.out.printf("1.0 KILOGRAM equals 1000.0 GRAM: %b%n", kg1.equals(g1000));
+        System.out.println("\nLength:");
+        System.out.printf("1.0 FEET equals 12.0 INCH: %b%n", new Quantity<>(1.0, LengthUnit.FEET)
+            .equals(new Quantity<>(12.0, LengthUnit.INCH)));
 
-        System.out.println("\n--- Unit Conversion ---");
-        System.out.printf("500.0 GRAM to base unit: %.2f KILOGRAM%n", WeightUnit.GRAM.convertToBaseUnit(500.0));
-        
-        System.out.println("\n--- Quantity Conversion ---");
-        Quantity<WeightUnit> kg2 = new Quantity<>(2.0, WeightUnit.KILOGRAM);
-        System.out.printf("2.0 KILOGRAM to GRAM: %s%n", kg2.convertTo(WeightUnit.GRAM));
+        System.out.println("\nVolume:");
+        System.out.printf("1.0 LITRE equals 1000.0 MILLILITRE: %b%n", new Quantity<>(1.0, VolumeUnit.LITRE)
+            .equals(new Quantity<>(1000.0, VolumeUnit.MILLILITRE)));
 
-        System.out.println("\n--- Addition (Explicit Target) ---");
-        Quantity<WeightUnit> kg3 = new Quantity<>(3.0, WeightUnit.KILOGRAM);
-        Quantity<WeightUnit> g500 = new Quantity<>(500.0, WeightUnit.GRAM);
-        System.out.printf("3.0 KILOGRAM + 500.0 GRAM = %s%n", kg3.add(g500, WeightUnit.KILOGRAM));
-
-        System.out.println("\n--- Addition (Implicit Target) ---");
-        Quantity<WeightUnit> kg1_5 = new Quantity<>(1.5, WeightUnit.KILOGRAM);
-        Quantity<WeightUnit> g250 = new Quantity<>(250.0, WeightUnit.GRAM);
-        System.out.printf("1.5 KILOGRAM + 250.0 GRAM = %s%n", kg1_5.add(g250));
-
-        System.out.println("\n===== GENERIC LENGTH MEASUREMENT SUPPORT =====\n");
-
-        System.out.println("--- Equality ---");
-        Quantity<LengthUnit> feet1 = new Quantity<>(1.0, LengthUnit.FEET);
-        Quantity<LengthUnit> inch12 = new Quantity<>(12.0, LengthUnit.INCH);
-        System.out.printf("1.0 FEET equals 12.0 INCH: %b%n", feet1.equals(inch12));
-
-        System.out.println("\n--- Quantity Conversion ---");
-        Quantity<LengthUnit> feet2 = new Quantity<>(2.0, LengthUnit.FEET);
-        System.out.printf("2.0 FEET to INCH: %s%n", feet2.convertTo(LengthUnit.INCH));
-
-        System.out.println("\n--- Addition (Explicit Target) ---");
-        Quantity<LengthUnit> feet3 = new Quantity<>(3.0, LengthUnit.FEET);
-        Quantity<LengthUnit> inch24 = new Quantity<>(24.0, LengthUnit.INCH);
-        System.out.printf("3.0 FEET + 24.0 INCH = %s%n", feet3.add(inch24, LengthUnit.FEET));
-
-        System.out.println("\n===== CROSS-CATEGORY TYPE SAFETY =====\n");
-        System.out.println("--- Preventing Invalid Cross-Category Comparisons ---");
-        Quantity<LengthUnit> foot = new Quantity<>(1.0, LengthUnit.FEET);
-        Quantity<WeightUnit> kg = new Quantity<>(1.0, WeightUnit.KILOGRAM);
-        System.out.printf("1.0 FEET equals 1.0 KILOGRAM: %b (correctly prevents cross-category comparison)%n", foot.equals(kg));
-
-        System.out.println("\n========================================");
-        System.out.println("     Application Execution Complete");
-        System.out.println("========================================");
+        System.out.println("\nCross-category check:");
+        System.out.printf("1.0 LITRE equals 1.0 FEET: %b%n", new Quantity<>(1.0, VolumeUnit.LITRE)
+            .equals(new Quantity<>(1.0, LengthUnit.FEET)));
     }
 }
