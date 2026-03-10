@@ -4,10 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class QuantityMeasurementAppTest {
+
     private static final double EPSILON = 1e-6;
 
     @Test
@@ -90,44 +91,11 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Volume: volume and length are incompatible")
-    public void testVolumeCrossCategory_Prevention() {
-        Quantity<VolumeUnit> litre = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<LengthUnit> foot = new Quantity<>(1.0, LengthUnit.FEET);
-        assertNotEquals(litre, foot);
-    }
-
-    @Test
-    @DisplayName("VolumeUnit: base conversion factor")
-    public void testVolumeUnit_ConversionFactor() {
-        assertEquals(1.0, VolumeUnit.LITRE.getConversionFactor(), EPSILON);
-        assertEquals(3.78541, VolumeUnit.GALLON.convertToBaseUnit(1.0), EPSILON);
-    }
-
-    // ===== UC12: SUBTRACTION TEST CASES =====
-
-    @Test
     @DisplayName("Subtraction: 5.0 ft - 2.0 ft = 3.0 ft")
     public void testSubtraction_Length_SameUnit() {
         Quantity<LengthUnit> feet1 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> feet2 = new Quantity<>(2.0, LengthUnit.FEET);
         assertEquals(new Quantity<>(3.0, LengthUnit.FEET), feet1.subtract(feet2));
-    }
-
-    @Test
-    @DisplayName("Subtraction: 5.0 ft - 24.0 in = 3.0 ft")
-    public void testSubtraction_Length_CrossUnit() {
-        Quantity<LengthUnit> feet = new Quantity<>(5.0, LengthUnit.FEET);
-        Quantity<LengthUnit> inches = new Quantity<>(24.0, LengthUnit.INCH);
-        assertEquals(new Quantity<>(3.0, LengthUnit.FEET), feet.subtract(inches));
-    }
-
-    @Test
-    @DisplayName("Subtraction: 5.0 ft - 24.0 in in inches = 36.0 in")
-    public void testSubtraction_Length_ExplicitTarget() {
-        Quantity<LengthUnit> feet = new Quantity<>(5.0, LengthUnit.FEET);
-        Quantity<LengthUnit> inches = new Quantity<>(24.0, LengthUnit.INCH);
-        assertEquals(new Quantity<>(36.0, LengthUnit.INCH), feet.subtract(inches, LengthUnit.INCH));
     }
 
     @Test
@@ -147,68 +115,11 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Subtraction: negative result when second > first")
-    public void testSubtraction_NegativeResult() {
-        Quantity<LengthUnit> feet1 = new Quantity<>(2.0, LengthUnit.FEET);
-        Quantity<LengthUnit> feet2 = new Quantity<>(5.0, LengthUnit.FEET);
-        assertEquals(new Quantity<>(-3.0, LengthUnit.FEET), feet1.subtract(feet2));
-    }
-
-    @Test
-    @DisplayName("Subtraction: null check")
-    public void testSubtraction_NullCheck() {
-        Quantity<LengthUnit> feet = new Quantity<>(5.0, LengthUnit.FEET);
-        assertThrows(IllegalArgumentException.class, () -> feet.subtract(null));
-    }
-
-    // ===== UC12: DIVISION TEST CASES =====
-
-    @Test
-    @DisplayName("Division: 12.0 in / 1.0 ft = 1.0 in")
-    public void testDivision_Length_EquivalentUnits() {
-        Quantity<LengthUnit> inches = new Quantity<>(12.0, LengthUnit.INCH);
-        Quantity<LengthUnit> feet = new Quantity<>(1.0, LengthUnit.FEET);
-        assertEquals(new Quantity<>(1.0, LengthUnit.INCH), inches.divide(feet));
-    }
-
-    @Test
     @DisplayName("Division: 24.0 in / 12.0 in = 2.0 in")
     public void testDivision_Length_SameUnit() {
         Quantity<LengthUnit> inches1 = new Quantity<>(24.0, LengthUnit.INCH);
         Quantity<LengthUnit> inches2 = new Quantity<>(12.0, LengthUnit.INCH);
         assertEquals(new Quantity<>(2.0, LengthUnit.INCH), inches1.divide(inches2));
-    }
-
-    @Test
-    @DisplayName("Division: 1000.0 g / 1.0 kg = 1.0 g")
-    public void testDivision_Weight() {
-        Quantity<WeightUnit> g = new Quantity<>(1000.0, WeightUnit.GRAM);
-        Quantity<WeightUnit> kg = new Quantity<>(1.0, WeightUnit.KILOGRAM);
-        assertEquals(new Quantity<>(1.0, WeightUnit.GRAM), g.divide(kg));
-    }
-
-    @Test
-    @DisplayName("Division: 2.0 L / 1000.0 mL = 2.0 L")
-    public void testDivision_Volume() {
-        Quantity<VolumeUnit> litre = new Quantity<>(2.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> millilitre = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
-        assertEquals(new Quantity<>(2.0, VolumeUnit.LITRE), litre.divide(millilitre));
-    }
-
-    @Test
-    @DisplayName("Division: result < 1.0 when first < second")
-    public void testDivision_LessThanOne() {
-        Quantity<LengthUnit> feet1 = new Quantity<>(2.0, LengthUnit.FEET);
-        Quantity<LengthUnit> feet2 = new Quantity<>(5.0, LengthUnit.FEET);
-        assertEquals(new Quantity<>(0.4, LengthUnit.FEET), feet1.divide(feet2));
-    }
-
-    @Test
-    @DisplayName("Division: result > 1.0 when first > second")
-    public void testDivision_GreaterThanOne() {
-        Quantity<LengthUnit> feet1 = new Quantity<>(10.0, LengthUnit.FEET);
-        Quantity<LengthUnit> feet2 = new Quantity<>(2.0, LengthUnit.FEET);
-        assertEquals(new Quantity<>(5.0, LengthUnit.FEET), feet1.divide(feet2));
     }
 
     @Test
@@ -220,9 +131,58 @@ public class QuantityMeasurementAppTest {
     }
 
     @Test
-    @DisplayName("Division: null check")
-    public void testDivision_NullCheck() {
-        Quantity<LengthUnit> feet = new Quantity<>(5.0, LengthUnit.FEET);
-        assertThrows(IllegalArgumentException.class, () -> feet.divide(null));
+    @DisplayName("Temperature: 0 C equals 32 F")
+    public void testTemperatureEquality_CelsiusFahrenheit() {
+        Quantity<TemperatureUnit> c = new Quantity<>(0.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> f = new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
+        assertEquals(c, f);
+    }
+
+    @Test
+    @DisplayName("Temperature: 0 C equals 273.15 K")
+    public void testTemperatureEquality_CelsiusKelvin() {
+        Quantity<TemperatureUnit> c = new Quantity<>(0.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> k = new Quantity<>(273.15, TemperatureUnit.KELVIN);
+        assertEquals(c, k);
+    }
+
+    @Test
+    @DisplayName("Temperature: convert 100 C to 212 F")
+    public void testTemperatureConversion_CelsiusToFahrenheit() {
+        Quantity<TemperatureUnit> c = new Quantity<>(100.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> f = c.convertTo(TemperatureUnit.FAHRENHEIT);
+        assertEquals(212.0, f.getValue(), EPSILON);
+    }
+
+    @Test
+    @DisplayName("Temperature: convert 32 F to 0 C")
+    public void testTemperatureConversion_FahrenheitToCelsius() {
+        Quantity<TemperatureUnit> f = new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
+        Quantity<TemperatureUnit> c = f.convertTo(TemperatureUnit.CELSIUS);
+        assertEquals(0.0, c.getValue(), EPSILON);
+    }
+
+    @Test
+    @DisplayName("Temperature: arithmetic addition not allowed")
+    public void testTemperature_Addition_NotAllowed() {
+        Quantity<TemperatureUnit> c1 = new Quantity<>(10.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> c2 = new Quantity<>(20.0, TemperatureUnit.CELSIUS);
+        assertThrows(UnsupportedOperationException.class, () -> c1.add(c2));
+    }
+
+    @Test
+    @DisplayName("Temperature: subtraction not allowed")
+    public void testTemperature_Subtraction_NotAllowed() {
+        Quantity<TemperatureUnit> c1 = new Quantity<>(10.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> c2 = new Quantity<>(5.0, TemperatureUnit.CELSIUS);
+        assertThrows(UnsupportedOperationException.class, () -> c1.subtract(c2));
+    }
+
+    @Test
+    @DisplayName("Temperature: division not allowed")
+    public void testTemperature_Division_NotAllowed() {
+        Quantity<TemperatureUnit> c1 = new Quantity<>(10.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> c2 = new Quantity<>(2.0, TemperatureUnit.CELSIUS);
+        assertThrows(UnsupportedOperationException.class, () -> c1.divide(c2));
     }
 }

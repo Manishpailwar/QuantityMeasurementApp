@@ -1,4 +1,4 @@
-package com.example;
+package com.equality;
 
 public class QuantityWeight {
     private static final double EPSILON = 1e-6;
