@@ -881,4 +881,185 @@ public class QuantityMeasurementAppTest {
         
         assertEquals(1.0, convertedToFeet.getValue(), EPSILON);
     }
+
+    // UC7: EXPLICIT TARGET UNIT ADDITION TEST CASES
+    @Test
+    @DisplayName("UC7: Given 1.0 feet and 12.0 inches with explicit target unit FEET, when added, then should return 2.0 feet")
+    public void testAddition_ExplicitTargetUnit_Feet() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength result = feet1.add(inches1, LengthUnit.FEET);
+        
+        assertEquals(2.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.FEET, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 1.0 feet and 12.0 inches with explicit target unit INCHES, when added, then should return 24.0 inches")
+    public void testAddition_ExplicitTargetUnit_Inches() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength result = feet1.add(inches1, LengthUnit.INCH);
+        
+        assertEquals(24.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.INCH, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 1.0 feet and 12.0 inches with explicit target unit YARDS, when added, then should return ~0.667 yards")
+    public void testAddition_ExplicitTargetUnit_Yards() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength result = feet1.add(inches1, LengthUnit.YARD);
+        
+        assertEquals(2.0 / 3.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.YARD, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 1.0 inches and 1.0 inches with explicit target unit CENTIMETERS, when added, then should return ~5.08 centimeters")
+    public void testAddition_ExplicitTargetUnit_Centimeters() {
+        QuantityLength inches1 = new QuantityLength(1.0, LengthUnit.INCH);
+        QuantityLength inches2 = new QuantityLength(1.0, LengthUnit.INCH);
+        QuantityLength result = inches1.add(inches2, LengthUnit.CENTIMETER);
+        
+        // 2 inches in cm using our conversion factors: 2 / 12 / (0.393701 / 12) = 2 / 0.393701 ≈ 5.08
+        assertEquals(5.08, result.getValue(), 0.01);
+        assertEquals(LengthUnit.CENTIMETER, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 2.0 yards and 3.0 feet with explicit target unit YARDS (same as first operand), when added, then should return 3.0 yards")
+    public void testAddition_ExplicitTargetUnit_SameAsFirstOperand() {
+        QuantityLength yard1 = new QuantityLength(2.0, LengthUnit.YARD);
+        QuantityLength feet1 = new QuantityLength(3.0, LengthUnit.FEET);
+        QuantityLength result = yard1.add(feet1, LengthUnit.YARD);
+        
+        assertEquals(3.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.YARD, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 2.0 yards and 3.0 feet with explicit target unit FEET (same as second operand), when added, then should return 9.0 feet")
+    public void testAddition_ExplicitTargetUnit_SameAsSecondOperand() {
+        QuantityLength yard1 = new QuantityLength(2.0, LengthUnit.YARD);
+        QuantityLength feet1 = new QuantityLength(3.0, LengthUnit.FEET);
+        QuantityLength result = yard1.add(feet1, LengthUnit.FEET);
+        
+        assertEquals(9.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.FEET, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 1.0 feet and 12.0 inches with explicit target unit YARDS, when added in any order, then should be commutative")
+    public void testAddition_ExplicitTargetUnit_Commutativity() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        
+        QuantityLength result1 = feet1.add(inches1, LengthUnit.YARD);
+        QuantityLength result2 = inches1.add(feet1, LengthUnit.YARD);
+        
+        assertEquals(result1.getValue(), result2.getValue(), EPSILON);
+        assertEquals(result1.getUnit(), result2.getUnit());
+        assertEquals(result1, result2);
+    }
+
+    @Test
+    @DisplayName("UC7: Given 5.0 feet and 0.0 inches with explicit target unit YARDS, when added, then should return ~1.667 yards")
+    public void testAddition_ExplicitTargetUnit_WithZero() {
+        QuantityLength feet1 = new QuantityLength(5.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(0.0, LengthUnit.INCH);
+        QuantityLength result = feet1.add(inches1, LengthUnit.YARD);
+        
+        assertEquals(5.0 / 3.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.YARD, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 5.0 feet and -2.0 feet with explicit target unit INCHES, when added, then should return 36.0 inches")
+    public void testAddition_ExplicitTargetUnit_NegativeValues() {
+        QuantityLength feet1 = new QuantityLength(5.0, LengthUnit.FEET);
+        QuantityLength feet2 = new QuantityLength(-2.0, LengthUnit.FEET);
+        QuantityLength result = feet1.add(feet2, LengthUnit.INCH);
+        
+        assertEquals(36.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.INCH, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given null target unit, when adding, then should throw IllegalArgumentException")
+    public void testAddition_ExplicitTargetUnit_NullTargetUnit() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        
+        assertThrows(IllegalArgumentException.class, () -> feet1.add(inches1, null));
+    }
+
+    @Test
+    @DisplayName("UC7: Given 1000.0 feet and 500.0 feet with explicit target unit INCHES, when added, then should return 18000.0 inches")
+    public void testAddition_ExplicitTargetUnit_LargeToSmallScale() {
+        QuantityLength feet1 = new QuantityLength(1000.0, LengthUnit.FEET);
+        QuantityLength feet2 = new QuantityLength(500.0, LengthUnit.FEET);
+        QuantityLength result = feet1.add(feet2, LengthUnit.INCH);
+        
+        assertEquals(18000.0, result.getValue(), EPSILON * 18000.0);
+        assertEquals(LengthUnit.INCH, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given 12.0 inches and 12.0 inches with explicit target unit YARDS, when added, then should return ~0.667 yards")
+    public void testAddition_ExplicitTargetUnit_SmallToLargeScale() {
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength inches2 = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength result = inches1.add(inches2, LengthUnit.YARD);
+        
+        assertEquals(2.0 / 3.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.YARD, result.getUnit());
+    }
+
+    @Test
+    @DisplayName("UC7: Given various unit combinations with multiple target units, when added, then should verify mathematical correctness across all combinations")
+    public void testAddition_ExplicitTargetUnit_AllUnitCombinations() {
+        // Test FEET + INCHES with multiple target units
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        
+        QuantityLength resultFeet = feet1.add(inches1, LengthUnit.FEET);
+        QuantityLength resultInches = feet1.add(inches1, LengthUnit.INCH);
+        QuantityLength resultYards = feet1.add(inches1, LengthUnit.YARD);
+        
+        assertEquals(resultFeet, resultInches);
+        assertEquals(resultFeet, resultYards);
+        
+        // Test YARDS + FEET with multiple target units
+        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength feet2 = new QuantityLength(3.0, LengthUnit.FEET);
+        
+        QuantityLength resultYards2 = yard1.add(feet2, LengthUnit.YARD);
+        QuantityLength resultFeet2 = yard1.add(feet2, LengthUnit.FEET);
+        
+        assertEquals(resultYards2, resultFeet2);
+    }
+
+    @Test
+    @DisplayName("UC7: Given multiple additions with explicit target units, when verified using epsilon-based comparison, then should maintain floating-point precision")
+    public void testAddition_ExplicitTargetUnit_PrecisionTolerance() {
+        QuantityLength feet1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches1 = new QuantityLength(12.0, LengthUnit.INCH);
+        
+        QuantityLength resultYards = feet1.add(inches1, LengthUnit.YARD);
+        assertEquals(2.0 / 3.0, resultYards.getValue(), EPSILON);
+        
+        QuantityLength cm1 = new QuantityLength(2.54, LengthUnit.CENTIMETER);
+        QuantityLength inches2 = new QuantityLength(1.0, LengthUnit.INCH);
+        QuantityLength resultCm = cm1.add(inches2, LengthUnit.CENTIMETER);
+        // Using larger tolerance for centimeter conversions due to conversion factor precision
+        assertEquals(5.08, resultCm.getValue(), 0.01);
+        
+        // Test precision across scale conversions
+        QuantityLength yard1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength feet2 = new QuantityLength(3.0, LengthUnit.FEET);
+        QuantityLength resultInches2 = yard1.add(feet2, LengthUnit.INCH);
+        assertEquals(72.0, resultInches2.getValue(), EPSILON);
+    }
 }
