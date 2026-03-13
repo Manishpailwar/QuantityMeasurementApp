@@ -7,7 +7,6 @@ public enum LengthUnit implements Measurable {
     CENTIMETER((0.393701) / 12.0, "CENTIMETER");
     private final double conversionFactor;
     private final String unitName;
-
     LengthUnit(double conversionFactor, String unitName) {
         this.conversionFactor = conversionFactor;
         this.unitName = unitName;

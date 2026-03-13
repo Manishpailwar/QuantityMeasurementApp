@@ -7,6 +7,7 @@ public interface Measurable {
     default boolean supportsArithmetic() {
         return true;
     }
+    
     default void validateOperationSupport(String operation) {
     }
 }
