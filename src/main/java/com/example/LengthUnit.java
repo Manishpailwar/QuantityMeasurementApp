@@ -5,7 +5,6 @@ public enum LengthUnit implements Measurable {
     INCH(1.0 / 12.0, "INCH"),
     YARD(3.0, "YARD"),
     CENTIMETER((0.393701) / 12.0, "CENTIMETER");
-
     private final double conversionFactor;
     private final String unitName;
 
