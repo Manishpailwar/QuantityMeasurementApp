@@ -1,0 +1,87 @@
+version: "3.9"
+
+services:
+
+  # ── MySQL ──────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: qty-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: manish
+      MYSQL_DATABASE: auth_service_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pmanish"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Auth Service (8081) ────────────────────────────────────────────────────
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_service_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: manish
+      APPLICATION_SECURITY_JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      APPLICATION_SECURITY_JWT_EXPIRATION: 86400000
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── Length Service (8082) ──────────────────────────────────────────────────
+  length-service:
+    build: ./length-service
+    container_name: length-service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/length_service_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: manish
+      AUTH_SERVICE_URL: http://auth-service:8081
+    depends_on:
+      - auth-service
+
+  # ── Weight-Volume Service (8083) ───────────────────────────────────────────
+  weight-volume-service:
+    build: ./weight-volume-service
+    container_name: weight-volume-service
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/weight_volume_service_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: manish
+      AUTH_SERVICE_URL: http://auth-service:8081
+    depends_on:
+      - auth-service
+
+  # ── Temperature Service (8084) ─────────────────────────────────────────────
+  temperature-service:
+    build: ./temperature-service
+    container_name: temperature-service
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/temperature_service_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: manish
+      AUTH_SERVICE_URL: http://auth-service:8081
+    depends_on:
+      - auth-service
+
+volumes:
+  mysql_data:
