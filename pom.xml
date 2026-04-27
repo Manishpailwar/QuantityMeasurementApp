@@ -58,6 +58,13 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
+        <!-- dotenv dependency for .env files -->
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
         <!-- JWT Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -93,11 +100,10 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
